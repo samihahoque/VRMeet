@@ -13,7 +13,7 @@ var port = process.env.PORT || 8080;
 
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var app = express();
-app.use(serveStatic('public', {'index': ['index.html']}));
+app.use(express.static('public'));
 
 // Start Express http server
 var webServer = http.createServer(app).listen(port);
