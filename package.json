@@ -16,7 +16,7 @@
     "node": "6.9.x"
   },
   "repository": {
-    "url": "https://glitch.com/#!/project/networked-aframe"
+    "url": "https://github.com/samihahoque/VRMeet"
   },
   "license": "MIT",
   "keywords": [
