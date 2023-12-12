@@ -31,7 +31,7 @@
       <!-- <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg"
         crossorigin="anonymous" /> -->
       <img id="sky" src="img/tiles-texture.jpg" crossorigin="anonymous" />
-
+      <img id="bitcoin" src="img/bitcoin.png" crossorigin="anonymous" />
       <img id="groundTexture" src="img/wood-floor.jpg">
       <a-asset-item id="table" src="objects/Table_01.obj"></a-asset-item>
       <a-asset-item id="table-mtl" src="objects/Table_01.mtl"></a-asset-item>
@@ -56,6 +56,7 @@
       </template>
 
       <!-- /Templates -->
+      <canvas id="my-canvas" crossorigin="anonymous"></canvas>
     </a-assets>
 
     <a-entity id="player" networked="template:#avatar-template;attachTemplateToLocal:false;" camera
@@ -75,6 +76,7 @@
       geometry="height:15"></a-plane>
     <a-obj-model src="#table" mtl="#table-mtl" position="0 -0.427 1.293" rotation="270 90 0" scale="0.008 0.008 0.008"
       material=""></a-obj-model>
+
     <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 0.5" rotation="270 0 0"
       material=""></a-obj-model><a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005"
       position="1.839 -0.003 2.21" rotation="270 0 0" material=""></a-obj-model><a-obj-model src="#chair"
@@ -85,6 +87,9 @@
       material=""></a-obj-model><a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005"
       position="0.014 -0.003 3.846" rotation="270 270 0" material=""></a-obj-model>
 
+    
+    <!-- canvas plane -->
+    <a-entity geometry="primitive: plane" material:"src: #my-canvas" draw-canvas="my-canvas"></a-entity>
 
     <!-- <a-entity id="particles" particle-system="preset: snow"></a-entity> -->
   </a-scene>
@@ -110,6 +115,20 @@
           property: 'color'
         }
       ]
+    });
+
+    AFRAME.registerComponent("draw-canvas", {
+        init: function() {
+            schema: {default: ''},
+            init: function() {
+                this.canvas = document.getElementById(this.data);
+                this.ctx = this.canvas.getContext('2d');
+                const img = document.getElementById("bitcoin");   
+                img.addEventListener("load", (e) => {
+                    ctx.drawImage(img, 10, 10);
+                }
+            }
+        }
     });
   </script>
 </body>
