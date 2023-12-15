@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Networked Audio Example — Networked-Aframe</title>
@@ -14,7 +15,6 @@
     src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
   <script src="/js/spawn-in-circle.component.js"></script>
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.7.1/aframe.js"></script> -->
 
 </head>
 
@@ -28,15 +28,20 @@
     <a-assets>
 
       <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
-      <!-- <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg"
-        crossorigin="anonymous" /> -->
-      <img id="sky" src="img/tiles-texture.jpg" crossorigin="anonymous" />
+
+      <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg"
+        crossorigin="anonymous" />
+      
       <img id="bitcoin" src="img/bitcoin.png" crossorigin="anonymous" />
       <img id="groundTexture" src="img/wood-floor.jpg">
+
+      <!-- Objects -->
       <a-asset-item id="table" src="objects/Table_01.obj"></a-asset-item>
       <a-asset-item id="table-mtl" src="objects/Table_01.mtl"></a-asset-item>
       <a-asset-item id="chair" src="objects/WoodChair_01.obj"></a-asset-item>
       <a-asset-item id="chair-mtl" src="objects/WoodChair_01.mtl"></a-asset-item>
+      <a-asset-item id="plant" src="objects/Houseplant.obj"></a-asset-item>
+      <a-asset-item id="plant-mtl" src="objects/Houseplant.mtl"></a-asset-item>
 
       <!-- Templates -->
 
@@ -64,34 +69,33 @@
       <a-sphere class="head" visible="false" random-color></a-sphere>
     </a-entity>
 
-    <a-entity position="0 0 0" geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
-      material="src: #grid; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
-
-    <a-entity light="color: #ccccff; intensity: 1; type: ambient;" visible=""></a-entity>
-    <a-entity light="color: #ffaaff; intensity: 1.5" position="5 5 5"></a-entity>
-
-    <a-sky src="#sky" rotation="0 -90 0"></a-sky>
-
     <a-plane src="#groundTexture" rotation="-90 0 0" width="10" height="10" position="0 0 1.125"
       geometry="height:15"></a-plane>
+
+    <!-- Objects -->
     <a-obj-model src="#table" mtl="#table-mtl" position="0 -0.427 1.293" rotation="270 90 0" scale="0.008 0.008 0.008"
       material=""></a-obj-model>
 
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 0.5" rotation="270 0 0"
-      material=""></a-obj-model><a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005"
-      position="1.839 -0.003 2.21" rotation="270 0 0" material=""></a-obj-model><a-obj-model src="#chair"
-      mtl="#chair-mtl" scale="0.005 0.005 0.005" position="-1.557 -0.003 2.068" rotation="270 180 0"
-      material=""></a-obj-model><a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005"
-      position="-1.557 -0.003 0.449" rotation="270 180 0" material=""></a-obj-model><a-obj-model src="#chair"
-      mtl="#chair-mtl" scale="0.005 0.005 0.005" position="0.014 -0.003 -1.461" rotation="270 90 0"
-      material=""></a-obj-model><a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005"
-      position="0.014 -0.003 3.846" rotation="270 270 0" material=""></a-obj-model>
-
-    
     <!-- canvas plane -->
     <a-entity geometry="primitive: plane" material:"src: #my-canvas" draw-canvas="my-canvas"></a-entity>
 
-    <!-- <a-entity id="particles" particle-system="preset: snow"></a-entity> -->
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 0.5" rotation="270 0 0"
+      material=""></a-obj-model>
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 2.21" rotation="270 0 0"
+      material=""></a-obj-model>
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="-1.557 -0.003 2.068"
+      rotation="270 180 0" material=""></a-obj-model>
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="-1.557 -0.003 0.449"
+      rotation="270 180 0" material=""></a-obj-model>
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="0.014 -0.003 -1.461"
+      rotation="270 90 0" material=""></a-obj-model>
+    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="0.014 -0.003 3.846"
+      rotation="270 270 0" material=""></a-obj-model>
+
+    <a-obj-model src="#plant" mtl="#plant-mtl" position="4.011 0 7.83" scale="0.3 0.3 0.3" material=""></a-obj-model>
+    <a-obj-model src="#plant" mtl="#plant-mtl" position="-4.011 0 7.83" scale="0.3 0.3 0.3" material=""></a-obj-model>
+    <a-obj-model src="#plant" mtl="#plant-mtl" position="-4.110 0 -5.0" scale="0.3 0.3 0.3" material=""></a-obj-model>
+    <a-obj-model src="#plant" mtl="#plant-mtl" position="4.011 0 -5.0" scale="0.3 0.3 0.3" material=""></a-obj-model>
   </a-scene>
 
   <script>
