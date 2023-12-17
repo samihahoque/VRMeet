@@ -1,140 +1,233 @@
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>VRMeet</title>
+    <meta name="description" content="VRMeet" />
 
-<head>
-  <meta charset="utf-8">
-  <title>Networked Audio Example — Networked-Aframe</title>
-  <meta name="description" content="etworked Audio Example — Networked-Aframe">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script src="easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.6.0/dist/networked-aframe.min.js"></script>
 
-  <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-  <script src="easyrtc/easyrtc.js"></script>
-  <script src="https://unpkg.com/networked-aframe@^0.6.0/dist/networked-aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+  </head>
 
-  <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
-  <script
-    src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
-  <script src="/js/spawn-in-circle.component.js"></script>
+  <body>
+    <script>
+      var isMobile = AFRAME.utils.device.isMobile();
 
+      if (isMobile) {
+        var particles = document.getElementById("particles");
+        particles.parentNode.removeChild(particles);
+      }
 
-</head>
+      NAF.schemas.add({
+        template: "#avatar-template",
+        components: [
+          "position",
+          "rotation",
+          {
+            selector: ".head",
+            component: "material",
+            property: "color",
+          },
+        ],
+      });
 
-<body>
-  <a-scene networked-scene="
+      AFRAME.registerComponent("draw-canvas", {
+        schema: { default: "" },
+        init: function () {
+          this.canvas = document.getElementById(this.data);
+          this.ctx = this.canvas.getContext("2d");
+          const img = document.getElementById("bitcoin");
+          //ctx.drawImage(img, 10, 10);
+        },
+      });
+    </script>
+    <a-scene
+      networked-scene="
       room: audio;
       adapter: easyrtc;
       audio: true;
       debug: true;
-    ">
-    <a-assets>
+    "
+    >
+      <a-assets>
+        <img
+          id="grid"
+          src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png"
+          crossorigin="anonymous"
+        />
+        <img
+          id="sky"
+          src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg"
+          crossorigin="anonymous"
+        />
+        <img id="bitcoin" src="img/bitcoin.png" crossorigin="anonymous" />
+        <img id="groundTexture" src="img/wood-floor.jpg" />
 
-      <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
+        <a-asset-item id="table" src="objects/Table_01.obj"></a-asset-item>
+        <a-asset-item id="table-mtl" src="objects/Table_01.mtl"></a-asset-item>
+        <a-asset-item id="chair" src="objects/WoodChair_01.obj"></a-asset-item>
+        <a-asset-item
+          id="chair-mtl"
+          src="objects/WoodChair_01.mtl"
+        ></a-asset-item>
+        <a-asset-item id="plant" src="objects/Houseplant.obj"></a-asset-item>
+        <a-asset-item
+          id="plant-mtl"
+          src="objects/Houseplant.mtl"
+        ></a-asset-item>
 
-      <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg"
-        crossorigin="anonymous" />
-      
-      <img id="bitcoin" src="img/bitcoin.png" crossorigin="anonymous" />
-      <img id="groundTexture" src="img/wood-floor.jpg">
-
-      <!-- Objects -->
-      <a-asset-item id="table" src="objects/Table_01.obj"></a-asset-item>
-      <a-asset-item id="table-mtl" src="objects/Table_01.mtl"></a-asset-item>
-      <a-asset-item id="chair" src="objects/WoodChair_01.obj"></a-asset-item>
-      <a-asset-item id="chair-mtl" src="objects/WoodChair_01.mtl"></a-asset-item>
-      <a-asset-item id="plant" src="objects/Houseplant.obj"></a-asset-item>
-      <a-asset-item id="plant-mtl" src="objects/Houseplant.mtl"></a-asset-item>
-
-      <!-- Templates -->
-
-      <!-- Avatar -->
-      <template id="avatar-template">
-        <a-entity class="avatar" networked-audio-source>
-          <a-sphere class="head" color="#5985ff" scale="0.45 0.5 0.4" random-color></a-sphere>
-          <a-entity class="face" position="0 0.05 0">
-            <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35" scale="0.12 0.12 0.12">
-              <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-            </a-sphere>
-            <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35" scale="0.12 0.12 0.12">
-              <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-            </a-sphere>
+        <template id="avatar-template">
+          <a-entity class="avatar" networked-audio-source>
+            <a-sphere
+              class="head"
+              color="#5985ff"
+              scale="0.45 0.5 0.4"
+              random-color
+            ></a-sphere>
+            <a-entity class="face" position="0 0.05 0">
+              <a-sphere
+                class="eye"
+                color="#efefef"
+                position="0.16 0.1 -0.35"
+                scale="0.12 0.12 0.12"
+              >
+                <a-sphere
+                  class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+              <a-sphere
+                class="eye"
+                color="#efefef"
+                position="-0.16 0.1 -0.35"
+                scale="0.12 0.12 0.12"
+              >
+                <a-sphere
+                  class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+            </a-entity>
           </a-entity>
-        </a-entity>
-      </template>
+        </template>
 
-      <!-- /Templates -->
-      <canvas id="my-canvas" crossorigin="anonymous"></canvas>
-    </a-assets>
+        <canvas id="my-canvas" crossorigin="anonymous"></canvas>
+      </a-assets>
 
-    <a-entity id="player" networked="template:#avatar-template;attachTemplateToLocal:false;" camera
-      spawn-in-circle="radius:2;" position="0.5 1.5 0" wasd-controls look-controls>
-      <a-sphere class="head" visible="false" random-color></a-sphere>
-    </a-entity>
-
-    <a-plane src="#groundTexture" rotation="-90 0 0" width="10" height="10" position="0 0 1.125"
-      geometry="height:15"></a-plane>
-
-    <!-- Objects -->
-    <a-obj-model src="#table" mtl="#table-mtl" position="0 -0.427 1.293" rotation="270 90 0" scale="0.008 0.008 0.008"
-      material=""></a-obj-model>
-
-    <!-- canvas plane -->
-    <a-entity geometry="primitive: plane" material:"src: #my-canvas" draw-canvas="my-canvas"></a-entity>
-
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 0.5" rotation="270 0 0"
-      material=""></a-obj-model>
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="1.839 -0.003 2.21" rotation="270 0 0"
-      material=""></a-obj-model>
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="-1.557 -0.003 2.068"
-      rotation="270 180 0" material=""></a-obj-model>
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="-1.557 -0.003 0.449"
-      rotation="270 180 0" material=""></a-obj-model>
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="0.014 -0.003 -1.461"
-      rotation="270 90 0" material=""></a-obj-model>
-    <a-obj-model src="#chair" mtl="#chair-mtl" scale="0.005 0.005 0.005" position="0.014 -0.003 3.846"
-      rotation="270 270 0" material=""></a-obj-model>
-
-    <a-obj-model src="#plant" mtl="#plant-mtl" position="4.011 0 7.83" scale="0.3 0.3 0.3" material=""></a-obj-model>
-    <a-obj-model src="#plant" mtl="#plant-mtl" position="-4.011 0 7.83" scale="0.3 0.3 0.3" material=""></a-obj-model>
-    <a-obj-model src="#plant" mtl="#plant-mtl" position="-4.110 0 -5.0" scale="0.3 0.3 0.3" material=""></a-obj-model>
-    <a-obj-model src="#plant" mtl="#plant-mtl" position="4.011 0 -5.0" scale="0.3 0.3 0.3" material=""></a-obj-model>
-  </a-scene>
-
-  <script>
-    // On mobile remove elements that are resource heavy
-    var isMobile = AFRAME.utils.device.isMobile();
-
-    if (isMobile) {
-      var particles = document.getElementById('particles');
-      particles.parentNode.removeChild(particles);
-    }
-
-    // Define custom schema for syncing avatar color, set by random-color
-    NAF.schemas.add({
-      template: '#avatar-template',
-      components: [
-        'position',
-        'rotation',
-        {
-          selector: '.head',
-          component: 'material',
-          property: 'color'
-        }
-      ]
-    });
-
-    AFRAME.registerComponent("draw-canvas", {
-        init: function() {
-            schema: {default: ''},
-            init: function() {
-                this.canvas = document.getElementById(this.data);
-                this.ctx = this.canvas.getContext('2d');
-                const img = document.getElementById("bitcoin");   
-                img.addEventListener("load", (e) => {
-                    ctx.drawImage(img, 10, 10);
-                }
-            }
-        }
-    });
-  </script>
-</body>
-
+      <a-entity
+        id="player"
+        networked="template:#avatar-template;attachTemplateToLocal:false;"
+        camera
+        spawn-in-circle="radius:2;"
+        position="0.5 1.5 0"
+        wasd-controls
+        look-controls
+      >
+        <a-sphere class="head" visible="false" random-color></a-sphere>
+      </a-entity>
+      <a-plane
+        src="#groundTexture"
+        rotation="-90 0 0"
+        width="10"
+        height="10"
+        position="0 0 1.125"
+        geometry="height:15"
+      ></a-plane>
+      <a-obj-model
+        src="#table"
+        mtl="#table-mtl"
+        position="0 -0.427 1.293"
+        rotation="270 90 0"
+        scale="0.008 0.008 0.008"
+        material=""
+      ></a-obj-model>
+      <!-- <a-entity geometry="primitive: plane" material:"src: #my-canvas" draw-canvas="my-canvas"></a-entity> -->
+      <a-image src="#bitcoin" position="0 1.2 0"></a-image>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="1.839 -0.003 0.5"
+        rotation="270 0 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="1.839 -0.003 2.21"
+        rotation="270 0 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="-1.557 -0.003 2.068"
+        rotation="270 180 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="-1.557 -0.003 0.449"
+        rotation="270 180 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="0.014 -0.003 -1.461"
+        rotation="270 90 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#chair"
+        mtl="#chair-mtl"
+        scale="0.005 0.005 0.005"
+        position="0.014 -0.003 3.846"
+        rotation="270 270 0"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#plant"
+        mtl="#plant-mtl"
+        position="4.011 0 7.83"
+        scale="0.3 0.3 0.3"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#plant"
+        mtl="#plant-mtl"
+        position="-4.011 0 7.83"
+        scale="0.3 0.3 0.3"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#plant"
+        mtl="#plant-mtl"
+        position="-4.110 0 -5.0"
+        scale="0.3 0.3 0.3"
+        material=""
+      ></a-obj-model>
+      <a-obj-model
+        src="#plant"
+        mtl="#plant-mtl"
+        position="4.011 0 -5.0"
+        scale="0.3 0.3 0.3"
+        material=""
+      ></a-obj-model>
+    </a-scene>
+  </body>
 </html>
