@@ -16,26 +16,6 @@
 
   <body>
     <script>
-      var isMobile = AFRAME.utils.device.isMobile();
-
-      if (isMobile) {
-        var particles = document.getElementById("particles");
-        particles.parentNode.removeChild(particles);
-      }
-
-      NAF.schemas.add({
-        template: "#avatar-template",
-        components: [
-          "position",
-          "rotation",
-          {
-            selector: ".head",
-            component: "material",
-            property: "color",
-          },
-        ],
-      });
-
       AFRAME.registerComponent("draw-canvas", {
         schema: { default: "" },
         init: function () {
@@ -229,5 +209,26 @@
         material=""
       ></a-obj-model>
     </a-scene>
+    <script>
+      var isMobile = AFRAME.utils.device.isMobile();
+
+      if (isMobile) {
+        var particles = document.getElementById("particles");
+        particles.parentNode.removeChild(particles);
+      }
+
+      NAF.schemas.add({
+        template: "#avatar-template",
+        components: [
+          "position",
+          "rotation",
+          {
+            selector: ".head",
+            component: "material",
+            property: "color",
+          },
+        ],
+      });
+    </script>
   </body>
 </html>
